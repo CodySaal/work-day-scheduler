@@ -24,7 +24,7 @@ textarea {
 .description {
   white-space: pre-wrap;
 }
-
+/* Not sure what this one is for yet */
 .time-block {
   text-align: center;
   border-radius: 15px;
