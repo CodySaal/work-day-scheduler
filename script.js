@@ -1,30 +1,25 @@
-var currentDayEl = $("#currentDay")
-var hourEl = $(".hour")
-var testEl = $(".testClass")
-var timeReference = $(".timeReference")
-var timeBlock = $(".time-block")
-var saveBtn = $(".saveBtn")
-var saveAlert = $(".eventSaved")
-var clearBtn = $(".clearSchedule")
+// jQuery selectors
+var currentDayEl = $("#currentDay");
+var saveBtn = $(".saveBtn");
+var saveAlert = $(".eventSaved");
+var clearBtn = $(".clearSchedule");
+var description = $(".description");
 
-var timeArray = timeReference.text().trim().split(" ")
-var numberTimeArray = timeArray.map(Number);
-var description = $(".description")
+// Moment.js
+var todayHeader = moment().format("dddd, MMMM YYYY");
+var currentTimeString = moment().format("HH");
+var currentTime = parseInt(currentTimeString);
 
+// Hides alert until save button is pressed
+saveAlert.hide();
 
+// Places the current day at the top of the schedule
+currentDayEl.text(todayHeader);
 
-var todayHeader = moment().format("dddd, MMMM YYYY")
-var currentTimeString = moment().format("HH")
-var currentTime = parseInt(currentTimeString)
-
-saveAlert.hide()
-currentDayEl.text(todayHeader)
-
+// Colors the timeblocks depending on whether the time is in the past, present, or future.
 function determineTense(){
     description.each(function(){
         var eventTime = parseInt($(this).attr("id"));
-        console.log(this)
-        console.log($(this).attr("id"))
         if (eventTime === currentTime){
             $(this).addClass("present");
             $(this).removeClass("past");
@@ -41,21 +36,20 @@ function determineTense(){
     })
 
 }
-
+// Saves events to local storage
 saveBtn.on("click", function(){
     var eventText = $(this).siblings(".description").val();
     var eventTime = $(this).siblings(".description").attr("id");
-    console.log(eventTime)
     localStorage.setItem(eventTime, eventText);
-    saveAlert.show().fadeOut(1500)
+    saveAlert.show().fadeOut(1500);
 })
-
+// Clears local storage
 clearBtn.on("click", function(){
     localStorage.clear();
-    window.location.reload()
+    window.location.reload();
 })
 
-
+// Retrieves local storage and sets it as the timeblock text.
 $("#9").val(localStorage.getItem("9"));
 $("#10").val(localStorage.getItem("10"));
 $("#11").val(localStorage.getItem("11"));
@@ -66,14 +60,7 @@ $("#15").val(localStorage.getItem("15"));
 $("#16").val(localStorage.getItem("16"));
 $("#17").val(localStorage.getItem("17"));
 
-
-
-
-
-
-
-
-
+// Calls the function to color the timeblocks
 determineTense();
 
 
