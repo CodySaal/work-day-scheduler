@@ -2,59 +2,43 @@ var currentDayEl = $("#currentDay")
 var hourEl = $(".hour")
 var testEl = $(".testClass")
 var timeReference = $(".timeReference")
+var timeBlock = $(".time-block")
 var timeArray = timeReference.text().trim().split(" ")
 var numberTimeArray = timeArray.map(Number);
 var description = $(".description")
 
-var eventTime = 0
 
-console.log(timeArray)
 
 var todayHeader = moment().format("dddd, MMMM YYYY")
-var currentTime = moment().format("h A")
-var military = moment().format("H")
-// var militaryNumber = parseInt(military)
-var militaryNumber = 11
-var militaryEvening = militaryNumber - 12
-
-
+var currentTimeString = moment().format("HH")
+var currentTime = parseInt(currentTimeString)
 currentDayEl.text(todayHeader)
 
-console.log(military)
-console.log(militaryNumber)
-console.log(militaryEvening)
-
-function timeConverter(){
-    if (militaryNumber > 12){
-        militaryNumber -= 12
-    }
-}
-
-function checkTense(){
-    timeConverter();
-    
-    console.log(militaryNumber)
-    for (var i = 0; i < numberTimeArray.length; i++){
-        eventTime = numberTimeArray[i]
-        if(militaryNumber < eventTime){
-            description.removeClass("present")
-            description.removeClass("past")
-            description.addClass("future")
-        } else if (militaryNumber > eventTime){
-            description.removeClass("present")
-            description.removeClass("future")
-            description.addClass("past")
+function determineTense(){
+    description.each(function(){
+        var eventTime = parseInt($(this).attr("id"));
+        console.log(this)
+        console.log($(this).attr("id"))
+        if (eventTime === currentTime){
+            $(this).addClass("present");
+            $(this).removeClass("past");
+            $(this).removeClass("future");
+        } else if (eventTime > currentTime){
+            $(this).addClass("future");
+            $(this).removeClass("past");
+            $(this).removeClass("present");
         } else {
-            description.removeClass("future")
-            description.removeClass("past")
-            description.addClass("present")
+            $(this).addClass("past")
+            $(this).removeClass("future");
+            $(this).removeClass("present");
         }
-    }
+        console.log(eventTime)
+        console.log(currentTime)
+    })
+
 }
-checkTense();
 
-
-
+determineTense();
 
 
 
